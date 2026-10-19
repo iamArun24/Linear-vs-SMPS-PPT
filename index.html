@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear vs SMPS Power Supply</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-blob b1"></div><div class="bg-blob b2"></div><div class="bg-blob b3"></div>
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<main class="stage" id="stage">
+
+<!-- ============ SLIDE 1 : TITLE ============ -->
+<section class="slide title-slide">
+  <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span>
+  <svg class="title-wave" viewBox="0 0 1280 70" preserveAspectRatio="none">
+    <defs><linearGradient id="waveGrad" x1="0" x2="1"><stop offset="0" stop-color="#f5d36b"/><stop offset=".5" stop-color="#f4a3c4"/><stop offset="1" stop-color="#8ccaf0"/></linearGradient></defs>
+    <path id="titleWavePath" pathLength="1"/>
+    <text x="40" y="66">AC in</text><text x="1240" y="24" text-anchor="end">steady DC out</text>
+  </svg>
+  <div class="title-left">
+    <span class="eyebrow">Power Electronics · Presentation</span>
+    <h1><span class="w" style="--i:0">Linear</span> <span class="w vs-word" style="--i:1">vs</span> <span class="w grad-text" style="--i:2">SMPS</span><br><span class="w" style="--i:3">Power</span> <span class="w" style="--i:4">Supply</span></h1>
+    <p class="title-sub">Two different ways of turning 230&nbsp;V AC mains into the steady, low-voltage DC that every electronic device needs.</p>
+    <div class="title-meta">
+      <div><span>Presented by</span><strong contenteditable="true">Your Name</strong></div>
+      <div><span>Subject / Class</span><strong contenteditable="true">Electronics</strong></div>
+    </div>
+    <p class="hint">Use ← → arrow keys, Space, or the buttons below · F = fullscreen</p>
+  </div>
+  <div class="title-right">
+    <figure class="t-img t-img-1">
+      <img src="images/linear-psu.jpg" alt="Inside a linear power supply with a toroidal transformer">
+      <figcaption><b class="tag tag-blue">Linear</b> Toroidal transformer + big capacitors</figcaption>
+    </figure>
+    <div class="vs-bubble">VS</div>
+    <figure class="t-img t-img-2">
+      <img src="images/smps-atx.png" alt="Inside an ATX computer SMPS">
+      <figcaption><b class="tag tag-pink">SMPS</b> Inside a computer (ATX) power supply</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2 : INTRODUCTION ============ -->
+<section class="slide">
+  <header class="sh"><span class="num">01</span><div><h2>Introduction to Power Supply</h2><p>What it is and why every electronic device needs one</p></div></header>
+  <div class="grid-2" style="grid-template-columns: 1.55fr 1fr;">
+    <div class="col">
+      <div class="card">
+        <p class="lead">A <b>power supply</b> converts electrical energy from a source (in India, the <b>230&nbsp;V, 50&nbsp;Hz AC</b> wall socket) into the exact voltage and current a device needs — usually <b>low-voltage DC</b> like 3.3&nbsp;V, 5&nbsp;V or 12&nbsp;V.</p>
+      </div>
+      <div class="diagram">
+        <div class="diagram-head"><span class="dtype">Flowchart</span><span class="duse">Use: shows the path energy takes from the wall socket to your device</span><button class="replay" title="Replay animation">↻</button></div>
+        <svg id="flow-intro" class="flow"></svg>
+      </div>
+      <div class="trio">
+        <div class="mini c-blue"><b>1 · Convert</b><span>AC → DC and step 230&nbsp;V down to a safe low voltage</span></div>
+        <div class="mini c-pink"><b>2 · Regulate</b><span>Keep the output steady when the load or mains changes</span></div>
+        <div class="mini c-peach"><b>3 · Protect</b><span>Isolation from mains, over-current &amp; short-circuit protection</span></div>
+      </div>
+    </div>
+    <figure class="photo tall">
+      <img src="images/laptop-charger.jpg" alt="65 W laptop charger">
+      <figcaption><b>A 65&nbsp;W laptop charger</b> — a power supply you use every day.<small>Photo: Chiliveri Rithvik, CC BY-SA 4.0, Wikimedia Commons</small></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ SLIDE 3 : TYPES ============ -->
+<section class="slide">
+  <header class="sh"><span class="num">02</span><div><h2>Types of Power Supplies</h2><p>Classified by what they convert and how they regulate</p></div></header>
+  <div class="diagram flush">
+    <div class="diagram-head"><span class="dtype lav">Mind Map</span><span class="duse">Use: organises the whole family of power supplies on one page, each with where it is used</span><button class="replay" title="Replay animation">↻</button></div>
+    <svg id="mind-types" class="mind"></svg>
+  </div>
+  <p class="footnote">★ Highlighted: the two AC → DC families this presentation compares — <b class="t-blue">Linear</b> and <b class="t-pink">SMPS</b>.</p>
+</section>
+
+<!-- ============ SLIDE 4 : WHAT IS LINEAR ============ -->
+<section class="slide">
+  <header class="sh"><span class="num blue">03</span><div><h2>What is a Linear Power Supply?</h2><p>The classic, quiet, transformer-based supply</p></div></header>
+  <div class="grid-2" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="col">
+      <div class="card accent-blue">
+        <h3>Definition</h3>
+        <p>A <b>linear power supply</b> steps mains AC down with a heavy <b>50/60&nbsp;Hz transformer</b>, rectifies and filters it, then uses a <b>linear regulator</b> — a transistor working in its <i>active (linear) region</i> — to drop the extra voltage and hold the output steady.</p>
+      </div>
+      <div class="card soft-yellow">
+        <h3>💡 Simple analogy</h3>
+        <p>Like a <b>half-closed water tap</b>: it controls the flow by throttling, and the “extra pressure” is simply wasted — in a linear supply it is wasted as <b>heat</b>.</p>
+      </div>
+      <div class="chips">
+        <span class="chip good">Very low noise &amp; ripple</span>
+        <span class="chip good">Simple, few parts</span>
+        <span class="chip good">Fast load response</span>
+        <span class="chip bad">Heavy 50&nbsp;Hz transformer</span>
+        <span class="chip bad">Efficiency ≈ 30–60%</span>
+        <span class="chip bad">Needs heat sinks</span>
+      </div>
+      <div class="card">
+        <h3>Common linear regulator ICs</h3>
+        <div class="ic-row">
+          <div><b>7805 / 7812</b><span>fixed 5&nbsp;V / 12&nbsp;V</span></div>
+          <div><b>LM317</b><span>adjustable 1.25–37&nbsp;V</span></div>
+          <div><b>AMS1117</b><span>LDO, e.g. 3.3&nbsp;V</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <figure class="photo">
+        <img src="images/linear-psu.jpg" alt="Interior of a linear power supply">
+        <figcaption><b>Inside a linear supply:</b> toroidal mains transformer, rows of filter capacitors, regulator on the board.<small>Photo: Chepry, CC BY-SA 4.0, Wikimedia Commons</small></figcaption>
+      </figure>
+      <figure class="photo short">
+        <img src="images/wall-wart.jpg" alt="Transformer-based wall adapter">
+        <figcaption><b>Old-style “wall wart” adapter</b> — heavy because of its iron-core transformer.<small>Photo: Evan-Amos, Public domain, Wikimedia Commons</small></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 5 : LINEAR BLOCK DIAGRAM ============ -->
+<section class="slide">
+  <header class="sh"><span class="num blue">04</span><div><h2>Components &amp; Block Diagram of Linear Power Supply</h2><p>Five stages, always in this order</p></div></header>
+  <div class="diagram">
+    <div class="diagram-head"><span class="dtype">Block Diagram</span><span class="duse">Use: shows the order of stages — each block’s output feeds the next</span><button class="replay" title="Replay animation">↻</button></div>
+    <svg id="flow-linear" class="flow"></svg>
+  </div>
+  <div class="comp-row">
+    <figure class="comp"><div class="crop"><img src="images/linear-psu.jpg" style="object-position: 40% 0%; transform: scale(1.9); transform-origin: 40% 0%;" alt="Toroidal transformer"></div><figcaption><b>Transformer</b>Steps 230&nbsp;V down to ~12&nbsp;V AC and isolates from mains<small>Chepry, CC BY-SA 4.0</small></figcaption></figure>
+    <figure class="comp"><img src="images/bridge.jpg" alt="Bridge rectifier"><figcaption><b>Bridge rectifier</b>4 diodes turn AC into pulsating DC<small>155LA3, CC BY 4.0</small></figcaption></figure>
+    <figure class="comp"><img src="images/capacitors.jpg" alt="Electrolytic capacitors"><figcaption><b>Filter capacitor</b>Stores charge to smooth the pulses<small>Brihaspati, CC BY-SA 4.0</small></figcaption></figure>
+    <figure class="comp"><img src="images/regulator-7805.jpg" alt="7805 regulator"><figcaption><b>Regulator (7805)</b>Holds a fixed output, e.g. 5&nbsp;V<small>Anonimski, CC0</small></figcaption></figure>
+    <figure class="comp wide"><img src="images/linear-schematic.png" class="contain" alt="Circuit diagram of linear power supply"><figcaption><b>Actual circuit</b>230&nbsp;V → transformer → bridge → C<sub>IN</sub> → regulator → C<sub>OUT</sub> → load R<sub>L</sub><small>CLI, Public domain</small></figcaption></figure>
+  </div>
+</section>
+
+<!-- ============ SLIDE 6 : LINEAR WORKING ============ -->
+<section class="slide">
+  <header class="sh"><span class="num blue">05</span><div><h2>Working Principle of Linear Power Supply</h2><p>Follow the waveform as it moves through each stage</p></div></header>
+  <div class="diagram">
+    <div class="diagram-head"><span class="dtype">Sequence Flowchart</span><span class="duse">Use: visualises what the voltage looks like after each step, in order</span><button class="replay" title="Replay animation">↻</button></div>
+    <div class="wave-flow" id="linearWaves"></div>
+  </div>
+  <div class="grid-2" style="grid-template-columns: 1fr 1fr; margin-top: 14px; height: auto;">
+    <div class="card accent-blue">
+      <h3>How the regulator holds the voltage</h3>
+      <p>A <b>series pass transistor</b> sits between input and output. An error amplifier compares the output with a fixed <b>reference voltage</b> and continuously adjusts the transistor — like a resistor that changes itself automatically.</p>
+      <div class="chain">
+        <span>Load increases, V<sub>out</sub> dips</span><i>→</i><span>Error amp senses it</span><i>→</i><span>Transistor conducts more</span><i>→</i><span>V<sub>out</sub> back to 5&nbsp;V</span>
+      </div>
+    </div>
+    <div class="card accent-peach">
+      <h3>The price: wasted heat</h3>
+      <div class="formula">P<sub>loss</sub> = (V<sub>in</sub> − V<sub>out</sub>) × I<sub>load</sub></div>
+      <table class="mini-t">
+        <tr><th>Input → 5&nbsp;V at 1&nbsp;A</th><th>Heat wasted</th><th>Efficiency</th></tr>
+        <tr><td>7&nbsp;V</td><td>2&nbsp;W</td><td>71%</td></tr>
+        <tr><td>12&nbsp;V</td><td>7&nbsp;W</td><td>42%</td></tr>
+        <tr><td>24&nbsp;V</td><td>19&nbsp;W</td><td>21%</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 7 : WHAT IS SMPS ============ -->
+<section class="slide">
+  <header class="sh"><span class="num pink">06</span><div><h2>What is SMPS (Switched Mode Power Supply)?</h2><p>The modern, compact, high-efficiency supply</p></div></header>
+  <div class="grid-2" style="grid-template-columns: 1.1fr 1fr;">
+    <div class="col">
+      <div class="card accent-pink">
+        <h3>Definition</h3>
+        <p>An <b>SMPS</b> first rectifies the mains, then a <b>MOSFET switch</b> turns it ON and OFF tens of thouyellows to millions of times per second. These high-frequency pulses pass through a <b>small ferrite transformer</b>, are rectified and filtered, and a <b>feedback controller</b> adjusts the pulse width (<b>PWM</b>) to keep the output constant.</p>
+      </div>
+      <div class="card soft-yellow">
+        <h3>💡 Simple analogy</h3>
+        <p>Like flicking a tap <b>fully ON and fully OFF</b> very fast. A switch that is fully open or fully shut wastes almost no energy — the <i>average</i> flow is set by how long it stays ON.</p>
+      </div>
+      <div class="chips">
+        <span class="chip good">Efficiency ≈ 80–95%</span>
+        <span class="chip good">Small &amp; light</span>
+        <span class="chip good">Universal input 90–264&nbsp;V AC</span>
+        <span class="chip bad">Switching noise / EMI</span>
+        <span class="chip bad">More complex design</span>
+      </div>
+      <div class="card">
+        <h3>Common SMPS types (topologies)</h3>
+        <div class="ic-row pink">
+          <div><b>Buck / Boost</b><span>DC-DC step down / up</span></div>
+          <div><b>Flyback</b><span>phone &amp; laptop chargers</span></div>
+          <div><b>Forward / Bridge</b><span>PC supplies, high power</span></div>
+        </div>
+      </div>
+    </div>
+    <figure class="photo legend-photo">
+      <img src="images/smps-atx.png" alt="ATX power supply interior with labelled parts" class="contain">
+      <figcaption>
+        <b>Inside a PC (ATX) SMPS:</b>
+        <ul class="legend">
+          <li><i>A</i> Bridge rectifier</li><li><i>B</i> Input filter capacitors</li>
+          <li><i>C</i> HF transformer</li><li><i>D</i> Output filter coil</li>
+          <li><i>E</i> Output filter capacitors</li><li><i>▥</i> Heat sinks (switches)</li>
+        </ul>
+        <small>Photo: Alan Liefting / Silverxxx, Public domain, Wikimedia Commons</small>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ SLIDE 8 : SMPS BLOCK DIAGRAM ============ -->
+<section class="slide">
+  <header class="sh"><span class="num pink">07</span><div><h2>Components &amp; Block Diagram of SMPS</h2><p>Power path on top, feedback loop underneath</p></div></header>
+  <div class="diagram">
+    <div class="diagram-head"><span class="dtype pink">Block Diagram + Feedback Loop</span><span class="duse">Use: shows the forward power path and how the output is fed back to control the switch</span><button class="replay" title="Replay animation">↻</button></div>
+    <svg id="flow-smps" class="flow"></svg>
+  </div>
+  <div class="trio" style="margin-top: 14px;">
+    <div class="mini c-pink"><b>Why switch at high frequency?</b><span>Transformer size shrinks as frequency rises — a 100&nbsp;kHz ferrite core is a fraction of the size of a 50&nbsp;Hz iron core for the same power.</span></div>
+    <div class="mini c-blue"><b>Why an optocoupler?</b><span>It sends the output-voltage information back using light, so the low-voltage side stays safely isolated from mains.</span></div>
+    <div class="mini c-lav"><b>EMI filter</b><span>Stops the fast switching noise from travelling back into the mains wiring and disturbing other equipment.</span></div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 9 : SMPS WORKING ============ -->
+<section class="slide">
+  <header class="sh"><span class="num pink">08</span><div><h2>Working Principle of SMPS</h2><p>Chop → transform → smooth → check → correct, thouyellows of times per second</p></div></header>
+  <div class="grid-2" style="grid-template-columns: 0.95fr 1.25fr;">
+    <div class="diagram">
+      <div class="diagram-head"><span class="dtype pink">Cycle Flowchart</span><span class="duse">Use: the step-by-step sequence; step 6 loops back to step 2</span><button class="replay" title="Replay animation">↻</button></div>
+      <svg id="flow-smps-cycle" class="flow"></svg>
+    </div>
+    <div class="col">
+      <div class="card pwm-card">
+        <div class="pwm-top">
+          <h3>Try it: PWM duty cycle</h3>
+          <label>Duty cycle <b id="dutyVal">40%</b><input type="range" id="duty" min="10" max="90" value="40"></label>
+        </div>
+        <svg id="pwmSvg" viewBox="0 0 560 150"></svg>
+        <p class="pwm-out">Average output ≈ D × V<sub>in</sub> = <b id="dutyCalc">0.40 × 24 V = 9.6 V</b> <span class="muted">(simplified buck stage)</span></p>
+        <p class="muted small">Wider pulses → more energy delivered → higher output. The controller widens or narrows the pulses automatically to hold the output steady.</p>
+      </div>
+      <figure class="photo scope">
+        <img src="images/lab-psu.jpg" alt="Oscilloscope showing SMPS waveforms">
+        <figcaption><b>Real SMPS waveforms:</b> “Gate PWM” square pulses (yellow) and the triangular “Inductor Current” (pink) on an oscilloscope.<small>Photo: Radarvector, CC BY-SA 4.0, Wikimedia Commons</small></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 10 : EFFICIENCY ============ -->
+<section class="slide">
+  <header class="sh"><span class="num peach">09</span><div><h2>Efficiency and Power Losses in Linear Supply and SMPS</h2><p>Where the energy goes — and how much is wasted</p></div></header>
+  <div class="grid-3">
+    <div class="card">
+      <h3>Typical efficiency</h3>
+      <div class="effbar"><span class="lbl">Linear</span><div class="track"><div class="range blue" style="left:30%;width:30%"></div></div><span class="val">30–60%</span></div>
+      <div class="effbar"><span class="lbl">SMPS</span><div class="track"><div class="range pink" style="left:80%;width:15%"></div></div><span class="val">80–95%</span></div>
+      <div class="axis"><span>0%</span><span>50%</span><span>100%</span></div>
+      <h4 class="t-blue">Losses in a Linear supply</h4>
+      <ul class="ticks">
+        <li><b>Regulator heat</b> (V<sub>in</sub>−V<sub>out</sub>)×I — the biggest loss</li>
+        <li>Transformer copper &amp; iron-core loss</li>
+        <li>Rectifier diode voltage drop</li>
+      </ul>
+      <div class="note-box peach">Rule of thumb: in a linear regulator, every <b>1&nbsp;V dropped at 1&nbsp;A = 1&nbsp;W of heat</b>.</div>
+    </div>
+    <div class="card">
+      <h4 class="t-pink" style="margin-top:0">Losses in an SMPS</h4>
+      <ul class="ticks">
+        <li><b>Switching loss</b> — during each ON↔OFF transition; grows with frequency</li>
+        <li><b>Conduction loss</b> — I²R in the MOSFET, diodes and wiring</li>
+        <li><b>Magnetic core loss</b> — hysteresis &amp; eddy currents in the ferrite</li>
+        <li>Controller &amp; gate-drive power, standby loss</li>
+      </ul>
+      <div class="note-box">Why SMPS wins: an ideal switch is either <b>fully ON</b> (≈0 V across it) or <b>fully OFF</b> (≈0 A through it). Power = V × I ≈ 0 in both states.</div>
+      <h4>Where 100&nbsp;W of input goes</h4>
+      <div class="split"><span class="lbl">Linear</span><div class="sbar"><div class="use blue" style="width:45%">45 W used</div><div class="waste">55 W heat</div></div></div>
+      <div class="split"><span class="lbl">SMPS</span><div class="sbar"><div class="use pink" style="width:90%">90 W used</div><div class="waste">10</div></div></div>
+      <p class="muted small">Typical example values.</p>
+    </div>
+    <div class="card calc">
+      <h3>Calculator: watts wasted</h3>
+      <div class="calc-in">
+        <label><span>V<sub>in</sub> (V)</span><input type="number" id="cVin" value="12" min="1" step="0.5"></label>
+        <label><span>V<sub>out</sub> (V)</span><input type="number" id="cVout" value="5" min="0.5" step="0.5"></label>
+        <label><span>Load (A)</span><input type="number" id="cI" value="2" min="0.1" step="0.1"></label>
+      </div>
+      <div id="calcOut"></div>
+      <p class="muted small">SMPS assumed 90% efficient. Linear efficiency ≈ V<sub>out</sub> ÷ V<sub>in</sub>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 11 : KEY DIFFERENCES ============ -->
+<section class="slide">
+  <header class="sh"><span class="num">10</span><div><h2>Key Differences Between Linear Power Supply and SMPS</h2><p>Side-by-side comparison</p></div></header>
+  <table class="cmp">
+    <thead><tr><th>Parameter</th><th class="h-blue">Linear Power Supply</th><th class="h-pink">SMPS</th></tr></thead>
+    <tbody>
+      <tr><td>Working principle</td><td>Transistor in active region drops the extra voltage</td><td>Transistor switched fully ON/OFF (PWM)</td></tr>
+      <tr><td>Efficiency</td><td>Low: ≈ 30–60%</td><td>High: ≈ 80–95%</td></tr>
+      <tr><td>Transformer</td><td>50/60&nbsp;Hz, laminated iron core, heavy</td><td>20&nbsp;kHz – 1&nbsp;MHz+, ferrite core, small</td></tr>
+      <tr><td>Size &amp; weight</td><td>Large and heavy</td><td>Compact and light</td></tr>
+      <tr><td>Heat generated</td><td>High — needs big heat sinks</td><td>Low</td></tr>
+      <tr><td>Output noise / ripple</td><td>Very low, no switching noise</td><td>Higher; switching noise &amp; EMI</td></tr>
+      <tr><td>Input voltage range</td><td>Narrow (e.g. 230&nbsp;V ±10%)</td><td>Wide (90–264&nbsp;V AC universal)</td></tr>
+      <tr><td>Output possibilities</td><td>Step-down only</td><td>Step-down, step-up or inverted; multiple outputs</td></tr>
+      <tr><td>Response to load change</td><td>Very fast</td><td>Slower (limited by control loop)</td></tr>
+      <tr><td>Design complexity</td><td>Simple, easy to repair</td><td>Complex</td></tr>
+      <tr><td>Cost</td><td>Cheap at low power, costly at high power</td><td>Cheaper at medium–high power</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ SLIDE 12 : PROS / CONS ============ -->
+<section class="slide">
+  <header class="sh"><span class="num">11</span><div><h2>Advantages and Disadvantages of Both Power Supplies</h2><p>No supply is perfect — each wins in different situations</p></div></header>
+  <div class="pc-grid">
+    <div class="pc-col">
+      <div class="pc-title blue">Linear Power Supply</div>
+      <div class="pc good"><h4>✔ Advantages</h4><ul><li>Very low output noise and ripple</li><li>Simple, robust circuit with few parts</li><li>Fast response to load changes</li><li>Almost no electromagnetic interference</li><li>Easy to design and repair; cheap at low power</li></ul></div>
+      <div class="pc bad"><h4>✘ Disadvantages</h4><ul><li>Low efficiency (≈ 30–60%)</li><li>Produces lots of heat → heat sinks / fans</li><li>Heavy, bulky 50&nbsp;Hz transformer</li><li>Can only step voltage down; narrow input range</li></ul></div>
+    </div>
+    <div class="pc-col">
+      <div class="pc-title pink">SMPS</div>
+      <div class="pc good"><h4>✔ Advantages</h4><ul><li>High efficiency (≈ 80–95%), low heat</li><li>Small and lightweight</li><li>Works on 90–264&nbsp;V AC anywhere in the world</li><li>Can step up, step down, invert; multiple outputs</li><li>Cheaper at medium and high power levels</li></ul></div>
+      <div class="pc bad"><h4>✘ Disadvantages</h4><ul><li>Switching noise &amp; EMI — needs filtering</li><li>Higher output ripple than linear</li><li>Complex design, harder to repair</li><li>Can draw distorted current from mains (needs PFC)</li></ul></div>
+    </div>
+  </div>
+  <div class="verdict"><span>👉 Choose <b class="t-blue">Linear</b> for quiet, low-power, analog circuits</span><span>👉 Choose <b class="t-pink">SMPS</b> for efficiency, small size and high power</span></div>
+</section>
+
+<!-- ============ SLIDE 13 : APPLICATIONS ============ -->
+<section class="slide">
+  <header class="sh"><span class="num">12</span><div><h2>Applications of Linear Power Supply and SMPS</h2><p>Where each one is used — and how to choose</p></div></header>
+  <div class="grid-2" style="grid-template-columns: 1fr 1.08fr;">
+    <div class="diagram">
+      <div class="diagram-head"><span class="dtype yellow">Decision Flowchart</span><span class="duse">Use: helps an engineer pick the right supply for a job</span><button class="replay" title="Replay animation">↻</button></div>
+      <svg id="flow-decide" class="flow"></svg>
+    </div>
+    <div class="apps">
+      <div class="app-col">
+        <div class="app-head blue">Linear — where silence matters</div>
+        <figure class="app-img"><img src="images/yamaha-linear.jpg" style="object-position: 50% 30%;" alt="Linear supply in a Yamaha amplifier"><figcaption>Linear PSU in a 1980s Yamaha audio amp <small>Retired electrician, CC0</small></figcaption></figure>
+        <ul class="ticks"><li>Hi-fi audio amplifiers &amp; preamps</li><li>Laboratory bench supplies</li><li>Medical &amp; measuring instruments</li><li>RF / radio &amp; sensor circuits</li><li>LDO “clean-up” after an SMPS</li></ul>
+      </div>
+      <div class="app-col">
+        <div class="app-head pink">SMPS — where efficiency matters</div>
+        <figure class="app-img"><img src="images/smps-atx.png" style="object-position: 50% 40%;" alt="ATX SMPS"><figcaption>Desktop computer ATX SMPS <small>A. Liefting / Silverxxx, PD</small></figcaption></figure>
+        <ul class="ticks"><li>PCs, laptops, phone chargers</li><li>TVs, monitors, set-top boxes</li><li>LED drivers &amp; lighting</li><li>Telecom, servers, data centres</li><li>EV chargers, industrial drives</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 14 : CONCLUSION & FUTURE ============ -->
+<section class="slide">
+  <header class="sh"><span class="num lav">13</span><div><h2>Conclusion and Future Trends in Power Supply Technology</h2><p>What we learned and where power supplies are heading</p></div></header>
+  <div class="grid-2" style="grid-template-columns: 0.82fr 1.18fr;">
+    <div class="col">
+      <div class="card accent-lav concl">
+        <h3>Conclusion</h3>
+        <ul class="ticks">
+          <li><b class="t-blue">Linear</b> = quiet and simple, but wasteful and heavy.</li>
+          <li><b class="t-pink">SMPS</b> = efficient, compact and light, but electrically noisier.</li>
+          <li>SMPS powers almost all modern electronics; linear still wins where <b>low noise</b> matters.</li>
+          <li>Best designs often <b>combine both</b>: SMPS for bulk conversion + LDO for a clean final rail.</li>
+        </ul>
+      </div>
+      <figure class="photo gan">
+        <img src="images/gan-vs-si.jpg" alt="Silicon vs GaN 30W chargers">
+        <figcaption><b>Same 30&nbsp;W, much smaller:</b> silicon charger (left) vs GaN charger (right).<small>Photo: 4300streetcar, CC BY 4.0, Wikimedia Commons</small></figcaption>
+      </figure>
+    </div>
+    <div class="diagram">
+      <div class="diagram-head"><span class="dtype lav">Mind Map</span><span class="duse">Use: connects each future trend to the benefit it brings</span><button class="replay" title="Replay animation">↻</button></div>
+      <svg id="mind-future" class="mind"></svg>
+      <div class="thanks">Thank you! &nbsp;Questions?</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<nav class="nav">
+  <button id="prevBtn" aria-label="Previous slide">‹</button>
+  <span id="counter">1 / 14</span>
+  <button id="nextBtn" aria-label="Next slide">›</button>
+  <button id="fsBtn" aria-label="Fullscreen" title="Fullscreen (F)">⛶</button>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>
